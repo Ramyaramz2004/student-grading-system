@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Grade & Mental Health Predictor</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #a8edea, #fed6e3);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px;
+    }
+    .container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      padding: 30px 40px;
+      width: 400px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: 600;
+      color: #444;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 10px;
+      background: #4caf50;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover { background: #45a049; }
+    .download-btn {
+      background: #2196f3;
+      margin-top: 10px;
+    }
+    .download-btn:hover {
+      background: #1976d2;
+    }
+    .result {
+      margin-top: 20px;
+      background: #f8f8f8;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .grade-bar {
+      height: 12px;
+      background: #eee;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .bar-fill {
+      height: 100%;
+      background: #4caf50;
+      width: {{ grade_percent|default(0) }}%;
+      transition: width 0.8s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Student Performance Predictor</h2>
+
+    <!-- Form for entering student details -->
+    <form action="/predict" method="post">
+      <label>Name:</label>
+      <input type="text" name="name" required />
+
+      <label>Age:</label>
+      <input type="number" name="age" required />
+
+      <label>Assignment Marks:</label>
+      <input type="number" name="assignment" required />
+
+      <label>Quiz Marks:</label>
+      <input type="number" name="quiz" required />
+
+      <label>Attendance (%):</label>
+      <input type="number" name="attendance" required />
+
+      <label>Study Hours (per day):</label>
+      <input type="number" name="study_hours" required />
+
+      <label>Sleep Hours (per day):</label>
+      <input type="number" name="sleep_hours" required />
+
+      <label>Stress Level (1–5):</label>
+      <input type="number" name="stress_level" min="1" max="5" required />
+
+      <button type="submit">Predict</button>
+    </form>
+
+    <!-- Display prediction results -->
+    {% if grade_text %}
+    <div class="result">
+      <h3>{{ grade_text }}</h3>
+      <div class="grade-bar">
+        <div class="bar-fill"></div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if mental_text %}
+    <div class="result">
+      <h3>{{ mental_text }}</h3>
+    </div>
+    {% endif %}
+
+    <!-- Download predictions button -->
+    <div style="text-align:center; margin-top:20px;">
+      <a href="/download">
+        <button type="button" class="download-btn">Download All Predictions</button>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
